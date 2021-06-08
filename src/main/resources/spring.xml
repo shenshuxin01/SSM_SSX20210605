@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="ssx">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!-- 导入资源属性文件 -->
+    <context:property-placeholder location="classpath:db.properties"/>
+    <!-- c3p0 连接池 -->
+    <bean id="dateSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <!-- 类似EL表达式取资源文件的值 -->
+        <property name="driverClass" value="${jdbc.driverClass}"></property>
+        <property name="jdbcUrl" value="${jdbc.url}"></property>
+        <property name="user" value="${jdbc.user}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+
+
+        <!--        <property name="initialPoolSize" value="${c3p0.initialPoolSize}"></property>-->
+        <!--        <property name="acquireIncrement" value="${c3p0.acquireIncrement}"></property>-->
+        <!--        <property name="maxPoolSize" value="${c3p0.maxPoolSize}"></property>-->
+        <!--        <property name="minPoolSize" value="${c3p0.minPoolSize}"></property>-->
+        <!--        <property name="maxStatements" value="${c3p0.maxStatements}"></property>-->
+        <!--        <property name="maxStatementsPerConnection" value="${c3p0.maxStatementsPerConnection}"></property>-->
+    </bean>
+
+<!--    配置mybatis-SqlSessionFactoryBean-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dateSource" />
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+    </bean>
+
+<!--    配置Dao层接口的包-让mybatis处理-->
+    <bean id="scannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="ssx.dao" />
+    </bean>
+
+</beans>
