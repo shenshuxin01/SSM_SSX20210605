@@ -2,6 +2,7 @@ import junit.framework.TestCase;
 
 public class Main  extends TestCase {
     public void testffff(){
-          assertEquals(1,1);
+        boolean qq = "".equals("qq");
+        assertEquals(1,1);
     }
 }
